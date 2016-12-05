@@ -10,7 +10,7 @@ namespace Lesson1Project
             string name = GetInfo("Name");
             int age = ValidateNum(GetInfo("Age"));
             string place = GetInfo("Place of birth");
-            string date = ValidateDate(GetInfo("Date of birth (format MM/dd/yyyy)"), age);
+            string date = ValidateDate(GetInfo("Date of birth (format MM/DD/YY)"), age);
 
             Console.Write("\nThanks, " + name + "! \r\nYou are " + age + " y.o.(born at " + date + ") and live in " + place + ". \r\n\nPress any key to exit...");
             Console.ReadKey();
