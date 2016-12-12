@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lesson4
 {
@@ -16,7 +11,7 @@ namespace Lesson4
     {
         static void Test(int a, MyClass v, ref int b, out int c)
         {
-            int B = 4;
+            int e = 4;
             a = 7;
             b = 8;
             v.A = 9;
