@@ -17,9 +17,15 @@ namespace Lesson5
     class B:A
     {
         // ERROR! public virtual override void Foo() - Override method cannot be marked as virtual
+        //public override void Foo()
+        //{
+        //    base.Foo();
+        //    Console.WriteLine("B");
+        //}
+
         public override void Foo()
         {
-            Console.WriteLine("B");
+            base.Foo();
         }
     }
 
