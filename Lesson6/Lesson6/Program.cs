@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Lesson6.Annotations;
 
 namespace Lesson6
 {
@@ -74,6 +78,66 @@ namespace Lesson6
         }
     }
 
+    class Eventtest
+    {
+        public event EventHandler TestChanged;
+
+        private int _test;
+
+        public int Test
+        {
+            get { return _test; }
+            set
+            {
+                _test = value;
+
+                onPropChanged();
+            }
+        }
+
+        private void onPropChanged()
+        {
+            TestChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    class Evttst:INotifyPropertyChanged
+    {
+        private int _a;
+        public int A
+        {
+            get { return _a; }
+            set
+            {
+                _a = value;
+                OnPropertyChanged();
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    class simpleEvtCase
+    {
+        public event EventHandler PropChanged;
+        public int A;
+        public void SetA(int a)
+        {
+            A = a;
+            RisePropChange();
+        }
+
+        public void RisePropChange()
+        {
+            PropChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -100,7 +164,42 @@ namespace Lesson6
              Base - Method 2
              */
 
+            var test = new Eventtest();
+            var tst = new Evttst();
+            var simple = new simpleEvtCase();
+
+            test.TestChanged += OnTestChanged;
+            test.Test = 10;
+
+            tst.PropertyChanged += OnPropChanged;
+            tst.A = 11;
+
+            simple.PropChanged += SimplePropChange;
+            simple.SetA(15);
+
             Console.ReadKey();
+        }
+
+        private static void OnPropChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "A")
+            {
+                var mc = sender as Evttst;
+                if (mc != null)
+                {
+                    Console.WriteLine($"Property {e.PropertyName} changed - {mc.A}");
+                }
+            }
+        }
+
+        private static void OnTestChanged(object sender, EventArgs eventArgs)
+        {
+            Console.WriteLine("Test changed");
+        }
+
+        private static void SimplePropChange(object sender, EventArgs eventArgs)
+        {
+            Console.WriteLine("Simple case");
         }
     }
     /*
